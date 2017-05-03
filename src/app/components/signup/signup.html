@@ -1,0 +1,47 @@
+<preloader [formSubmit]="formSubmit"></preloader>
+
+<ul class="collection" [hidden]="formMsg == ''">
+    <li class="collection-item {{ colorMsg }} center" style="color: #fff">{{ formMsg }}</li>
+</ul>
+
+<form novalidate #signupForm="ngForm" [hidden]="formSubmit">
+	<h1 class="center">Angular 2 Registro</h1>
+
+	<div class="input-field col s6 offset-s3">
+		<input type="email" placeholder="Email" class="form-control" id="email" required name="email" #email="ngModel" [(ngModel)]="model.email"
+		/>
+		<div [hidden]="email.valid || email.pristine" style="margin-left: 30px; color: firebrick">
+			El Email es requerido!
+		</div>
+	</div>
+
+	<div class="input-field col s6 offset-s3">
+		<input type="text" class="form-control" id="name" required placeholder="Nombre de usuario" name="name" #name="ngModel"
+			[(ngModel)]="model.name" />
+		<div [hidden]="name.valid || name.pristine" style="margin-left: 30px; color: firebrick">
+			El name es requerido!
+		</div>
+	</div>
+
+	<div class="input-field col s6 offset-s3">
+		<input type="password" class="form-control" id="password" required placeholder="Password" name="password" #password="ngModel"
+			[(ngModel)]="model.password" />
+		<div [hidden]="password.valid || password.pristine" style="margin-left: 30px; color: firebrick">
+			El password es requerido!
+		</div>
+	</div>
+
+	<div class="col s6" style="margin-top: 6px">
+		<button type="submit" (click)="register()" [disabled]="!signupForm.form.valid" class="btn waves-effect waves-light input-block-level">
+          Registrarme
+      </button>
+	</div>
+
+	<div class="col s6" style="margin-top: 6px">
+		<button (click)="login()" class="btn waves-effect waves-light input-block-level red" type="button">
+          Ir al login
+      </button>
+	</div>
+
+
+</form>

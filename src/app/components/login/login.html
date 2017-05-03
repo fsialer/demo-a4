@@ -1,0 +1,36 @@
+<preloader [formSubmit]="formSubmit"></preloader>
+
+<div style="color: #fff; width: 100%; padding: 10px 0" class="red center" [hidden]="formMsg == ''">{{ formMsg }}</div>
+ 
+<form novalidate #loginForm="ngForm" [hidden]="formSubmit">
+
+	<h1 class="center">Angular 4 Login</h1>
+
+	<div class="input-field col s6 offset-s3">
+		<input type="email" class="form-control" id="email" required placeholder="email" name="email" #email="ngModel"
+			[(ngModel)]="model.email" />
+		<div [hidden]="email.valid || email.pristine" style="margin-left: 30px; color: firebrick">
+			El email es requerido!
+		</div>
+	</div>
+
+	<div class="input-field col s6 offset-s3">
+		<input type="password" class="form-control" id="password" required placeholder="Password" name="password" #password="ngModel"
+			[(ngModel)]="model.password" />
+		<div [hidden]="password.valid || password.pristine" style="margin-left: 30px; color: firebrick">
+			El password es requerido!
+		</div>
+	</div>
+
+	<div class="col s6">
+		<button (click)="login()" class="btn waves-effect waves-light input-block-level" type="submit" [disabled]="!loginForm.form.valid">
+          Login
+      </button>
+	</div>
+
+	<div class="col s6" style="margin-top: 6px">
+		<button type="button" (click)="register()" class="btn waves-effect waves-light input-block-level red">
+          Registrarme
+      </button>
+	</div>
+</form>
