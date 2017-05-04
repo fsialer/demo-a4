@@ -19,17 +19,15 @@ export class LoginComponent {
 
   constructor(
     public router: Router,
-    public auth: Auth)
-  { }
+    public auth: Auth) { }
 
   login() {
     this.formSubmit = true;
     this.formMsg = '';
     this.auth.login(this.model).then(
       (res) => {
-        localStorage.setItem("id_token", res['token']);        
+        localStorage.setItem("id_token", res['token']);
         this.router.navigate(['/profile']);
-        console.log('hola');
       },
       (err) => {
         this.formSubmit = false;

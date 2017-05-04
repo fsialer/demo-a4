@@ -1,30 +1,40 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule,XHRBackend } from '@angular/http';
-
 import { UserService } from './providers/user/user.service';
 import { AuthGuard } from './guard/auth_guard.service';
 import { AppRoutingModule } from './routes/app-routing.module';
 import { Auth } from './providers/auth/auth.service';
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
+import { AppComponent } from './components/app/app.component';
 
-import { AppComponent }  from './components/app/app.component';
 import { components } from './components/index';
 
-import { AUTH_PROVIDERS,provideAuth } from 'angular2-jwt';
+import { AUTH_PROVIDERS } from 'angular2-jwt';
+import { HttpModule, XHRBackend, Http, RequestOptions } from '@angular/http';
 
 import { Logger } from "angular2-logger/core"; // ADD THIS
 
+import { provideAuth, AuthHttp, AuthConfig } from 'angular2-jwt';
+
 import { InterceptorXHRBackend } from './providers/interceptor/interceptor.service';
 
-import {Ng2PaginationModule} from 'ng2-pagination'; 
+import { Ng2PaginationModule } from 'ng2-pagination';
+
+export function authHttpServiceFactory(http: Http, options: RequestOptions) {
+  return new AuthHttp(new AuthConfig({
+    tokenName: 'id_token',
+    tokenGetter: (() => localStorage.getItem('id_token')),
+    globalHeaders: [
+      {
+        'Content-type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    ],
+  }), http, options);
+}
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    components
-  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -32,17 +42,22 @@ import {Ng2PaginationModule} from 'ng2-pagination';
     AppRoutingModule,
     Ng2PaginationModule
   ],
-  providers: [
-    {provide: XHRBackend, useClass: InterceptorXHRBackend},
-    AUTH_PROVIDERS, 
-    Auth, 
-    AuthGuard,
-    Logger, 
-    UserService,
-    provideAuth({
-      tokenGetter: () => localStorage.getItem('id_token')     
-    }),
+  declarations: [
+    AppComponent,
+    components
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    { provide: XHRBackend, useClass: InterceptorXHRBackend },
+    Auth,
+    AuthGuard,
+    UserService,
+    {
+      provide: AuthHttp,
+      useFactory: authHttpServiceFactory,
+      deps: [Http, RequestOptions]
+    }
+  ],
+
 })
 export class AppModule { }

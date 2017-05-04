@@ -1,0 +1,34 @@
+<a routerLink="/users/add" class="btn-floating btn-large waves-effect waves-light red right">
+    <i class="material-icons">add</i>
+</a>
+
+<div style="color: #fff; width: 90%; padding: 10px 0" class="red center" [hidden]="msg == ''">{{ msg }}</div>
+ 
+<table>
+	<thead>
+		<tr>
+			<th data-field="id">Id</th>
+			<th data-field="name">Name</th>
+			<th data-field="email">Email</th>
+            <th data-field="created_at">Created</th>
+            <th data-field="actions">Actions</th>
+		</tr>
+	</thead>
+
+	<tbody>
+		<tr *ngFor="let user of users">
+            <td data-field="id">{{ user.id }}</td>
+			<td data-field="name">{{ user.name }}</td>
+			<td data-field="email">{{ user.email }}</td>
+            <td data-field="created_at">{{ user.created_at | date:'short' }}</td>
+            <td data-field="actions">
+                 <a routerLink="/users/edit/{{user.id}}" style="padding: 0 0.5rem; font-size: 12px" class="btn waves-effect waves-light" name="action">Edit
+                    <i class="material-icons right">edit</i>
+                </a>
+                <a (click)="deleteUser(user.id)" style="padding: 0 0.5rem; font-size: 12px" class="btn waves-effect waves-light red" name="action">Remove
+                    <i class="material-icons right">delete</i>
+                </a>
+            </td>
+		</tr>
+	</tbody>
+</table>

@@ -16,7 +16,46 @@ import { User } from '../../../classes/user';
         }
     `]
 })
-export class UserListComponent
-{
+export class UserListComponent {
+    users: User[];
+    msg: string = '';
+    constructor(
+        public userService: UserService, 
+        public router: Router) {}
 
+    ngOnInit()
+    {
+        this.getUsers();
+    }
+
+    getUsers()
+    {
+        this.userService.getUsers().subscribe(
+            users => {
+                this.users = users['users'];
+            },
+            error => {
+                if(error instanceof AuthHttpError)
+                {
+                    this.router.navigate(['/']);
+                }
+            }
+        )
+    }
+
+    deleteUser(id: number | string)
+    {
+        this.userService.deleteUser(id).subscribe(
+            res => {
+                this.msg = "El usuario se ha eliminado correctamente";
+                setTimeout(() => {
+                    this.msg = "";
+                    this.getUsers();
+                }, 2000);
+            },
+            error => {
+                this.msg = "Ha ocurrido un error eliminando el usuario";
+            }
+        )
+    }
 }
