@@ -1,0 +1,27 @@
+<div style="color: #fff; width: 100%; padding: 10px 0" class="green center" [hidden]="formMsg == ''">{{ formMsg }}</div>
+ 
+<form novalidate #editForm="ngForm" [hidden]="formSubmit">
+
+	<div class="input-field col s6 offset-s3">
+		<input type="email" class="form-control" id="email" required placeholder="email" name="email" #email="ngModel"
+			[(ngModel)]="user.email" />
+		<div [hidden]="email.valid || email.pristine">
+			El email es requerido!
+		</div>
+	</div>
+
+	<div class="input-field col s6 offset-s3">
+		<input type="text" class="form-control" id="name" required name="name" placeholder="Name" #name="ngModel"
+			[(ngModel)]="user.name" />
+		<div [hidden]="name.valid || name.pristine">
+			El name es requerido!
+		</div>
+	</div>
+
+	<div class="col s6">
+		<button (click)="updateUser(user)" style="width: 100%" class="btn waves-effect waves-light input-block-level" type="submit" [disabled]="!editForm.form.valid">
+          Editar
+      </button>
+	</div>
+
+</form>

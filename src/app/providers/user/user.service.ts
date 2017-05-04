@@ -21,7 +21,7 @@ export class UserService {
             .map((response) => response.json()).catch(this.handleError);
     }
 
-    getUserpaginated(page: number | string): Observable<User[]> {
+    getUserspaginated(page: number | string): Observable<User[]> {
         return this.authHttp.get(`${this._apiUrl}users/paginated/${page}`)
             .map((response) => response.json()).catch(this.handleError);
     }
@@ -29,12 +29,16 @@ export class UserService {
         return this.authHttp.get(`${this._apiUrl}users/${id}`)
             .map((response) => response.json()).catch(this.handleError);
     }
-    createUser(user: User): Observable<User> {
-        return this.authHttp.post(`${this._apiUrl}users`, user)
-            .map((response) => response.json()).catch(this.handleError);
+    createUser(user: User): Observable<any>
+    { 
+        
+        return this.authHttp.post(`${this._apiUrl}users`, this._parseUser(user))
+                .map((response) => response.json())
+                .catch(this.handleError);
     }
+   
     updateUser(user: User): Observable<User[]> {
-        return this.authHttp.put(`${this._apiUrl}users/${user.id}`, user)
+        return this.authHttp.put(`${this._apiUrl}users/${user.id}`,this._parseUser(user))
             .map((response) => response.json()).catch(this.handleError);
     }
     deleteUser(id: number | string): Observable<any> {

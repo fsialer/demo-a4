@@ -10,7 +10,42 @@ import { Component } from '@angular/core';
     selector: 'user-edit',
     templateUrl: 'user_edit.html'
 })
-export class UserEditComponent 
-{ 
+export class UserEditComponent {
+    user: User = new User();
+    errorMessage: string;
+    formSubmit: boolean = false;
+    formMsg: string = "";
+    constructor(
+        public userService: UserService,
+        private route: ActivatedRoute,
+        private router: Router) { }
 
+    ngOnInit() {
+        this.getUser();
+    }
+
+    getUser() {
+        let id = +this.route.snapshot.params['id'];
+        this.userService.getUser(id).subscribe(
+            user => {
+                this.user = user['user'];
+            },
+            error => {
+                if (error instanceof AuthHttpError) {
+                    this.router.navigate(['/']);
+                }
+            }
+        )
+    }
+
+    updateUser(user: User) {
+        this.userService.updateUser(user).subscribe(
+            res => {
+                this.formMsg = "Usuario actualizado";
+            },
+            error => {
+                this.formMsg = "Error actualizando";
+            }
+        )
+    }
 }
