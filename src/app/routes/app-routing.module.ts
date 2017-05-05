@@ -53,6 +53,10 @@ import { LoginComponent } from './../components/login/login.component';
             {
                 path: '',
                 component: LoginComponent
+            },
+            {
+                path:'**',
+                component:LoginComponent
             }
         ])
     ],
